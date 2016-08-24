@@ -29,7 +29,7 @@ class PagingController: UIViewController {
     // for tab scrolling
     private var synchronizeTabAndContent: Bool = true
     
-    internal func setup(controllers: [UIViewController], labels: [String], defaultPage: Int = 0, infiniteScroll: Bool = false) {
+    public func setup(controllers: [UIViewController], labels: [String], defaultPage: Int = 0, infiniteScroll: Bool = false) {
         guard controllers.count == labels.count else { print("number of controllers and labels are not same"); return }
         
         pagingContentController = PagingContentController(controllers: controllers, defaultPage: defaultPage, infiniteScroll: infiniteScroll)

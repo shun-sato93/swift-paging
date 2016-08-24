@@ -9,6 +9,20 @@
 import Foundation
 
 class PagingTabController: UIViewController {
+    internal let scrollView: CustomedScrollView = {
+        $0.pagingEnabled = false
+        $0.showsHorizontalScrollIndicator = false
+        $0.showsVerticalScrollIndicator = false
+        $0.scrollsToTop = false
+        $0.bounces = false
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(CustomedScrollView(frame: .zero))
+    
+    internal var onSwitchedByTap: ((pageIndex: Int) -> Void)?
+    internal var onSwitchedByScroll: ((pageIndex: Int) -> Void)?
+    
+    // layout definitions
     private var kLabelWidth: CGFloat = 100.0
     private let kTabHeight: CGFloat = 37.0
     private let kRoundRectHeight: CGFloat = 17.5
@@ -21,19 +35,6 @@ class PagingTabController: UIViewController {
     
     private let normalLabelColor: UIColor = UIColor.lightGrayColor()
     private let focusedLabelColor: UIColor = UIColor.whiteColor()
-    
-    internal var onSwitchedByTap: ((pageIndex: Int) -> Void)?
-    internal var onSwitchedByScroll: ((pageIndex: Int) -> Void)?
-    
-    internal let scrollView: CustomedScrollView = {
-        $0.pagingEnabled = false
-        $0.showsHorizontalScrollIndicator = false
-        $0.showsVerticalScrollIndicator = false
-        $0.scrollsToTop = false
-        $0.bounces = false
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(CustomedScrollView(frame: .zero))
     
     lazy private var roundRectView: UIView = {
         $0.userInteractionEnabled = true

@@ -9,9 +9,6 @@
 import UIKit
 
 public class PagingContentController: UIViewController {
-    private let controllers: [UIViewController]
-    private let defaultPage: Int
-    private let infiniteScroll: Bool
     
     internal var onScrolled: (() -> Void)?
     internal var onScrollAnimationEnd: (() -> Void)?
@@ -27,6 +24,11 @@ public class PagingContentController: UIViewController {
         return $0
     }(UIScrollView(frame: .zero))
     
+    private let controllers: [UIViewController]
+    private let defaultPage: Int
+    private let infiniteScroll: Bool
+    private var scrollSubviews: [UIView] = [UIView]()
+    
     init(controllers: [UIViewController], defaultPage: Int = 0, infiniteScroll: Bool = false) {
         self.controllers = controllers
         self.defaultPage = defaultPage
@@ -37,8 +39,6 @@ public class PagingContentController: UIViewController {
         setupScrollView()
         layoutScrollView()
     }
-    
-    private var scrollSubviews: [UIView] = [UIView]()
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -74,6 +74,11 @@ public class PagingContentController: UIViewController {
         let destinationSubview = scrollView.subviews[pageIndex]
         scrollView.setContentOffset(CGPoint(x: destinationSubview.frame.origin.x, y: 0), animated: animated)
     }
+    
+    internal func getOffsetXRatio() -> CGFloat {
+        return scrollView.contentOffset.x / scrollView.contentSize.width
+    }
+    
     
     private func setupTestSubviews() {
         let colors:[UIColor] = [UIColor.redColor(), UIColor.blueColor(), UIColor.greenColor(), UIColor.yellowColor()]
@@ -123,10 +128,6 @@ public class PagingContentController: UIViewController {
         let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|[scrollView]|", options: [], metrics: nil, views: viewsDictionary)
         
         NSLayoutConstraint.activateConstraints(horizontalConstraints + verticalConstraints)
-    }
-    
-    internal func getOffsetXRatio() -> CGFloat {
-        return scrollView.contentOffset.x / scrollView.contentSize.width
     }
     
     private func relayoutScrollViewForInfiniteScrolling() {
